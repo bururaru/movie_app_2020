@@ -24,14 +24,14 @@ class App extends React.Component{
 
   render() {
    const {isLoading, movi} = this.state;
-   return <section class="container">
+   return <section className="container">
      {
        isLoading ? (
-       <div class="loader">
-         <span class="loader_text">Loading...</span>
+       <div className="loader">
+         <span className="loader_text">Loading...</span>
        </div> 
       ) : (
-        <div class="movies">
+        <div className="movies">
           {movi.map(mlist =>(
           <Movie 
             key={mlist.id}
@@ -40,6 +40,7 @@ class App extends React.Component{
             title={mlist.title}
             summary={mlist.summary}
             poster={mlist.medium_cover_image}
+            genres={mlist.genres}
           />
           ))}
         </div>

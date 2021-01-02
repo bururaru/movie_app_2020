@@ -1,26 +1,42 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from "react";
+import axios from "axios";
+import Movie from "./Movie";
 
 class App extends React.Component{
   state = {
-    count: 0
-  };
-  add = () => {
-    this.setState(current => ({count : current.count +1}))
-    
-  };
-  minus = () => {
-    this.setState(current => ({count : current.count -1}))
+    isLoading: true,
+    movi: []
   };
 
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies }
+      }
+    } = await axios.get("https://yts-proxy.now.sh/list_movies.json")
+    this.setState({movi:movies, isLoading: false})
+  }
+
+  componentDidMount() {
+    this.getMovies();
+  }
+
   render() {
-    return (
-    <div>
-      <h1>The number is {this.state.count}</h1>
-      <button onClick={this.add}>Add</button>
-      <button onClick={this.minus}>Minus </button>
-    </div>
-    );
+   const {isLoading, movi} = this.state;
+   return <div>
+     {
+       isLoading ? "Loading..." : movi.map(mlist =>{
+         return <Movie 
+         key={mlist.id}
+         id={mlist.id}
+         year={mlist.year}
+         title={mlist.title}
+         summary={mlist.summary}
+         poster={mlist.medium_cover_image}
+         />
+       })
+     }
+   </div>
   }
 }
 
